@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-mongoose.connection.openUri(process.env.URL_DB, { useNewUrlParser: true }, (err) => {
+mongoose.connection.openUri(process.env.MONGO_URI, { useNewUrlParser: true }, (err) => {
     if (err) {
         return console.log(err);
     }
