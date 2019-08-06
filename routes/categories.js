@@ -1,6 +1,7 @@
 const express = require('express');
 const Category = require('../models/category');
 const app = express();
+const mongoose = require('mongoose');
 
 app.get('/', (req, res) => {
     Category.find({}, (err, categories) => {
@@ -20,7 +21,6 @@ app.post('/', (req, res) => {
     const body = req.body;
     let categories = [];
 
-    console.log(body);
 
     for (let i = 0; i < body.length; i++) {
         body[i].tech_name = body[i].name.toLowerCase().replace(' ', '');
@@ -29,11 +29,25 @@ app.post('/', (req, res) => {
         categories.push(body[i]);
     }
 
-    const category = new Category();
-
-    category.collection.insertMany(categories, (err, data) => {
+    Category.collection.insertMany(categories, (err, data) => {
         return res.json(data);
     })
+});
+
+app.post('/delete', (req, res) => {
+    const idsToDelete = req.body.ids;
+
+    Category.deleteMany({ _id: { $in: idsToDelete } }, (err, data) => {
+        if (err) {
+            return res.status(400).json({
+                err
+            });
+        }
+
+        return res.json({
+            data
+        });
+    });
 });
 
 module.exports = app;

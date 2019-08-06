@@ -19,7 +19,6 @@ mongoose.connection.openUri(process.env.MONGO_URI, { useNewUrlParser: true }, (e
     if (err) {
         return console.log(err);
     }
-    console.log(process.env.NODE_ENV);
     console.log('DB online');
 });
 
