@@ -23,15 +23,31 @@ app.post('/', (req, res) => {
 
 
     for (let i = 0; i < body.length; i++) {
-        body[i].tech_name = body[i].name.toLowerCase().replace(' ', '');
-        body[i].name = body[i].name;
+        body[i].tech_name = body[i].name.toLowerCase().replace(/ /g, '');
 
-        categories.push(body[i]);
+        categories.push({
+            name: body[i].name,
+            tech_name: body[i].tech_name
+        });
     }
 
     Category.collection.insertMany(categories, (err, data) => {
         return res.json(data);
     })
+});
+
+app.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const category = {
+        name: req.body.name,
+        tech_name: req.body.tech_name = req.body.name.toLowerCase().replace(/ /g, '')
+    };
+
+    Category.findOneAndUpdate(id, category, { new: true }, (err, data) => {
+        res.json({
+            data
+        });
+    });
 });
 
 app.post('/delete', (req, res) => {
