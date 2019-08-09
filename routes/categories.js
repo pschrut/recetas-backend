@@ -43,7 +43,7 @@ app.put('/:id', (req, res) => {
         tech_name: req.body.tech_name = req.body.name.toLowerCase().replace(/ /g, '')
     };
 
-    Category.findOneAndUpdate(id, category, { new: true }, (err, data) => {
+    Category.updateOne({ _id: id }, category, { new: true }, (err, data) => {
         res.json({
             data
         });
